@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>AutoTV</title>
+<meta name="description" content="AutoTV : ton IPTV sur ton GSM et sur l'écran de ta voiture avec Android Auto. / Your IPTV on your phone and your car screen with Android Auto.">
+<meta property="og:title" content="AutoTV">
+<meta property="og:description" content="Ton IPTV sur l'écran de ta voiture (Android Auto). Téléchargement gratuit.">
+<meta name="theme-color" content="#0b1016">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Figtree:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --bg: #0b1016;
+    --panel: #121a23;
+    --panel-2: #17212c;
+    --line: #223040;
+    --text: #e9f0f6;
+    --dim: #93a4b5;
+    --accent: #3ea6ff;
+    --accent-ink: #04121f;
+    --warn: #ffc53d;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.55 Figtree, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    padding: max(20px, env(safe-area-inset-top)) 16px max(40px, env(safe-area-inset-bottom));
+  }
+  .wrap { max-width: 1040px; margin: 0 auto; display: grid; gap: 56px; }
+  a { color: var(--accent); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+
+  nav { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .brand { display: flex; align-items: center; gap: 10px; font: 700 20px/1 Sora, system-ui, sans-serif; letter-spacing: -0.01em; }
+  .brand svg { width: 34px; height: 34px; }
+  .lang { display: flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+  .lang button { border: 0; background: none; color: var(--dim); font: 600 13px Figtree, sans-serif; padding: 7px 13px; cursor: pointer; }
+  .lang button[aria-pressed="true"] { background: var(--panel-2); color: var(--text); }
+
+  .hero { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 40px; align-items: center; }
+  h1 { font: 800 clamp(34px, 6vw, 58px)/1.02 Sora, system-ui, sans-serif; letter-spacing: -0.03em; margin: 0 0 16px; text-wrap: balance; }
+  h1 em { font-style: normal; color: var(--accent); }
+  .lead { color: var(--dim); font-size: 18px; max-width: 34em; margin: 0 0 26px; }
+  .cta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
+    background: var(--accent); color: var(--accent-ink); font: 700 17px Sora, system-ui, sans-serif;
+    padding: 15px 24px; border-radius: 14px;
+  }
+  .btn svg { width: 20px; height: 20px; }
+  .meta { color: var(--dim); font-size: 14px; }
+
+  /* Écran de voiture stylisé : l'identité de la page. */
+  .dash { position: relative; aspect-ratio: 16 / 7.2; max-width: 100%; border-radius: 22px; background: #05080c; border: 1px solid var(--line); overflow: hidden; box-shadow: 0 30px 60px -30px #000; }
+  .dash .video { position: absolute; inset: 0 0 0 38%; background:
+      radial-gradient(120% 90% at 70% 30%, #1e5f97 0%, #0d2a44 45%, #05080c 80%); }
+  .dash .video::after { content: ""; position: absolute; left: 50%; top: 50%; width: 0; height: 0; transform: translate(-30%, -50%);
+      border-left: 26px solid #ffffffd0; border-top: 16px solid transparent; border-bottom: 16px solid transparent; }
+  .dash .panel { position: absolute; inset: 0 62% 0 0; background: #0f161ef2; border-right: 1px solid var(--line); padding: 10px; display: grid; align-content: start; gap: 6px; }
+  .dash .tabs { display: flex; gap: 4px; margin-bottom: 4px; }
+  .dash .tabs span { flex: 1; text-align: center; font: 600 9px Figtree, sans-serif; color: var(--dim); padding: 4px 0; border-radius: 6px; }
+  .dash .tabs span.on { background: #3ea6ff33; color: var(--text); }
+  .dash .row { display: flex; align-items: center; gap: 7px; font-size: 10px; padding: 5px; border-radius: 7px; }
+  .dash .row.on { background: #3ea6ff2a; }
+  .dash .row i { width: 18px; height: 18px; border-radius: 5px; background: #ffffff1a; flex: none; }
+  .dash .row b { font-weight: 600; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .dash .row small { color: var(--dim); font-size: 8.5px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .dash .ctrl { position: absolute; right: 12px; bottom: 12px; display: flex; gap: 6px; background: #0f161ee6; padding: 6px; border-radius: 12px; }
+  .dash .ctrl span { width: 20px; height: 18px; border-radius: 5px; background: #ffffff22; }
+
+  h2 { font: 700 26px/1.2 Sora, system-ui, sans-serif; letter-spacing: -0.02em; margin: 0 0 18px; text-wrap: balance; }
+  .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+  .feature { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 18px; }
+  .feature h3 { margin: 0 0 6px; font: 600 16px Figtree, sans-serif; }
+  .feature p { margin: 0; color: var(--dim); font-size: 14.5px; }
+  .feature .ico { font-size: 20px; line-height: 1; display: block; margin-bottom: 10px; }
+
+  .install { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 20px; }
+  .card h3 { margin: 0 0 12px; font: 600 17px Figtree, sans-serif; }
+  ol { margin: 0; padding-left: 22px; display: grid; gap: 8px; }
+  ol li::marker { color: var(--accent); font-weight: 700; }
+  .req { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+  .req li { display: flex; gap: 10px; align-items: baseline; }
+  .req .tag { flex: none; font: 700 11px Figtree, sans-serif; letter-spacing: .04em; text-transform: uppercase; padding: 3px 8px; border-radius: 999px; background: var(--panel-2); color: var(--dim); }
+
+  .qr { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: center; }
+  .qr .code { background: #fff; padding: 10px; border-radius: 12px; width: 150px; height: 150px; display: grid; place-items: center; }
+  .qr .code svg { width: 100%; height: 100%; }
+
+  .note { border-left: 3px solid var(--warn); padding: 4px 0 4px 14px; color: var(--dim); font-size: 14.5px; }
+  footer { color: var(--dim); font-size: 13px; border-top: 1px solid var(--line); padding-top: 18px; display: grid; gap: 6px; }
+
+  [data-lang="en"] .fr, [data-lang="fr"] .en { display: none !important; }
+
+  @media (max-width: 820px) {
+    .hero, .install { grid-template-columns: 1fr; }
+    .dash { order: -1; }
+  }
+  @media (max-width: 480px) {
+    .qr { grid-template-columns: 1fr; }
+    .btn { width: 100%; justify-content: center; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .btn { transition: transform .15s ease, filter .15s ease; }
+    .btn:hover { transform: translateY(-1px); filter: brightness(1.08); }
+  }
+</style>
+</head>
+<body data-lang="fr">
+<div class="wrap">
+  <nav>
+    <div class="brand">
+      <svg viewBox="0 0 108 108" aria-hidden="true"><path fill="#3EA6FF" d="M26,32h56a6,6 0,0 1,6 6v30a6,6 0,0 1,-6 6H26a6,6 0,0 1,-6 -6V38a6,6 0,0 1,6 -6z"/><path fill="#0b1016" d="M47,42v22l18,-11z"/><path fill="#3EA6FF" d="M40,80h28v4H40z"/></svg>
+      AutoTV
+    </div>
+    <div class="lang" role="group" aria-label="Langue / Language">
+      <button id="lang-fr" aria-pressed="true">FR</button>
+      <button id="lang-en" aria-pressed="false">EN</button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div>
+      <h1><span class="fr">Ton IPTV sur l'écran de <em>ta voiture</em>.</span><span class="en">Your IPTV on your <em>car screen</em>.</span></h1>
+      <p class="lead">
+        <span class="fr">AutoTV lit ton abonnement IPTV (Xtream Codes ou M3U) sur ton GSM et sur l'écran de ta voiture avec Android Auto : chaînes, guide des programmes, films et séries.</span>
+        <span class="en">AutoTV plays your IPTV subscription (Xtream Codes or M3U) on your phone and on your car screen with Android Auto: live TV, TV guide, movies and series.</span>
+      </p>
+      <div class="cta">
+        <a class="btn" id="download" href="https://github.com/zaolnahk-sudo/autotv-releases/releases/latest/download/AutoTV.apk">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19,9h-4V3H9v6H5l7,7 7,-7zM5,18v2h14v-2H5z"/></svg>
+          <span class="fr">Télécharger pour Android</span><span class="en">Download for Android</span>
+        </a>
+        <span class="meta" id="version"><span class="fr">Gratuit · APK</span><span class="en">Free · APK</span></span>
+      </div>
+    </div>
+    <div class="dash" aria-hidden="true">
+      <div class="video"></div>
+      <div class="panel">
+        <div class="tabs"><span class="on">TV</span><span>Films</span><span>Séries</span></div>
+        <div class="row on"><i></i><div><b>Info 24</b><small>20:00–20:30 · Journal</small></div></div>
+        <div class="row"><i></i><div><b>Sport 1</b><small>20:45 · Match en direct</small></div></div>
+        <div class="row"><i></i><div><b>Cinéma+</b><small>21:00 · Film du soir</small></div></div>
+        <div class="row"><i></i><div><b>Radio Route</b><small>Info trafic</small></div></div>
+      </div>
+      <div class="ctrl"><span></span><span></span><span></span><span></span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="fr">Ce que fait AutoTV</span><span class="en">What AutoTV does</span></h2>
+    <div class="features">
+      <div class="feature"><span class="ico">🚗</span>
+        <h3><span class="fr">Écran de la voiture</span><span class="en">Car screen</span></h3>
+        <p><span class="fr">La vidéo s'affiche en plein écran via Android Auto, à l'arrêt (pause recharge, attente).</span><span class="en">Full-screen video through Android Auto while parked (charging stops, waiting).</span></p></div>
+      <div class="feature"><span class="ico">🎧</span>
+        <h3><span class="fr">En roulant : le son</span><span class="en">While driving: audio</span></h3>
+        <p><span class="fr">Écoute tes chaînes, zappe avec les boutons du volant ou à la voix : « Ok Google, mets Info 24 sur AutoTV ».</span><span class="en">Listen to your channels, zap with the steering wheel buttons or by voice: “Hey Google, play Info 24 on AutoTV”.</span></p></div>
+      <div class="feature"><span class="ico">📺</span>
+        <h3><span class="fr">Guide et replay</span><span class="en">TV guide and replay</span></h3>
+        <p><span class="fr">Programme en cours sous chaque chaîne, programme complet, et replay si ton fournisseur le propose.</span><span class="en">What's on under each channel, full schedule, and replay when your provider offers it.</span></p></div>
+      <div class="feature"><span class="ico">🎬</span>
+        <h3><span class="fr">Films et séries</span><span class="en">Movies and series</span></h3>
+        <p><span class="fr">Reprise là où tu t'étais arrêté, épisode suivant automatique, choix de la langue et des sous-titres.</span><span class="en">Resume where you left off, automatic next episode, audio and subtitle language choice.</span></p></div>
+      <div class="feature"><span class="ico">⬇️</span>
+        <h3><span class="fr">Hors ligne</span><span class="en">Offline</span></h3>
+        <p><span class="fr">Télécharge un film en Wi-Fi à la maison et regarde-le à la borne, même sans réseau.</span><span class="en">Download a movie on Wi-Fi at home and watch it at the charger, even with no signal.</span></p></div>
+      <div class="feature"><span class="ico">🔒</span>
+        <h3><span class="fr">Pour toute la famille</span><span class="en">For the whole family</span></h3>
+        <p><span class="fr">Contrôle parental par code, catégories masquées, plusieurs abonnements, français et anglais.</span><span class="en">Parental PIN, hidden categories, several subscriptions, French and English.</span></p></div>
+    </div>
+  </section>
+
+  <section class="install">
+    <div class="card">
+      <h3><span class="fr">Installer en 4 étapes</span><span class="en">Install in 4 steps</span></h3>
+      <ol class="fr">
+        <li>Sur ton GSM Android, touche <strong>Télécharger</strong> et ouvre le fichier AutoTV.apk.</li>
+        <li>Autorise l'installation d'applis inconnues quand Android le demande.</li>
+        <li>Ouvre AutoTV, choisis ta langue et ajoute <strong>ton</strong> abonnement IPTV.</li>
+        <li>Suis le <strong>guide d'installation</strong> intégré pour activer Android Auto.</li>
+      </ol>
+      <ol class="en">
+        <li>On your Android phone, tap <strong>Download</strong> and open the AutoTV.apk file.</li>
+        <li>Allow installing unknown apps when Android asks.</li>
+        <li>Open AutoTV, pick your language and add <strong>your</strong> IPTV subscription.</li>
+        <li>Follow the built-in <strong>setup guide</strong> to enable Android Auto.</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3><span class="fr">Ce qu'il faut</span><span class="en">Requirements</span></h3>
+      <ul class="req">
+        <li><span class="tag">GSM</span><span class="fr">Android 8 ou plus.</span><span class="en">Android 8 or later.</span></li>
+        <li><span class="tag">Voiture</span><span class="fr">Android Auto. L'écran vidéo demande <strong>Android 15</strong> sur le GSM ; le son et le volant marchent dès Android 8.</span><span class="en">Android Auto. The video screen needs <strong>Android 15</strong> on the phone; audio and steering wheel work from Android 8.</span></li>
+        <li><span class="tag">IPTV</span><span class="fr">Ton propre abonnement (Xtream Codes ou lien M3U).</span><span class="en">Your own subscription (Xtream Codes or M3U link).</span></li>
+      </ul>
+      <p class="note">
+        <span class="fr">Android Auto : touche 10 fois « Version » dans ses paramètres, puis coche « Sources inconnues » dans les paramètres pour les développeurs.</span>
+        <span class="en">Android Auto: tap “Version” 10 times in its settings, then tick “Unknown sources” in developer settings.</span>
+      </p>
+    </div>
+  </section>
+
+  <section class="card qr">
+    <div class="code" id="qr" role="img" aria-label="QR code"></div>
+    <div>
+      <h3 style="margin:0 0 6px"><span class="fr">Sur ordinateur ?</span><span class="en">On a computer?</span></h3>
+      <p style="margin:0;color:var(--dim)"><span class="fr">Scanne ce QR code avec ton GSM pour ouvrir cette page et télécharger AutoTV.</span><span class="en">Scan this QR code with your phone to open this page and download AutoTV.</span></p>
+    </div>
+  </section>
+
+  <footer>
+    <span class="fr">La vidéo sur l'écran de la voiture n'est disponible qu'à l'arrêt. En roulant, seul le son est disponible.</span>
+    <span class="en">Video on the car screen is only available while parked. While driving, only audio is available.</span>
+    <span class="fr">AutoTV est un lecteur : il ne fournit aucune chaîne ni aucun contenu. Utilise uniquement un abonnement auquel tu as droit.</span>
+    <span class="en">AutoTV is a player: it provides no channels or content. Only use a subscription you are entitled to.</span>
+  </footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script>
+(() => {
+  const PAGE = 'https://zaolnahk-sudo.github.io/autotv-releases/';
+  const store = {
+    get: (k) => { try { return localStorage.getItem(k); } catch { return null; } },
+    set: (k, v) => { try { localStorage.setItem(k, v); } catch {} },
+  };
+
+  function setLang(l) {
+    document.body.dataset.lang = l;
+    document.documentElement.lang = l;
+    document.getElementById('lang-fr').setAttribute('aria-pressed', String(l === 'fr'));
+    document.getElementById('lang-en').setAttribute('aria-pressed', String(l === 'en'));
+    store.set('lang', l);
+  }
+  const initial = store.get('lang') || ((navigator.language || 'fr').toLowerCase().startsWith('fr') ? 'fr' : 'en');
+  setLang(initial);
+  document.getElementById('lang-fr').onclick = () => setLang('fr');
+  document.getElementById('lang-en').onclick = () => setLang('en');
+
+  // QR code de cette page.
+  if (window.qrcode) {
+    const qr = qrcode(0, 'M');
+    qr.addData(PAGE);
+    qr.make();
+    document.getElementById('qr').innerHTML = qr.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
+  }
+
+  // Dernière version publiée.
+  fetch('https://api.github.com/repos/zaolnahk-sudo/autotv-releases/releases/latest')
+    .then((r) => r.ok ? r.json() : null)
+    .then((rel) => {
+      if (!rel) return;
+      const date = new Date(rel.published_at);
+      const fr = date.toLocaleDateString('fr-BE', { day: 'numeric', month: 'long', year: 'numeric' });
+      const en = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      const v = (rel.name || rel.tag_name).replace('AutoTV ', '');
+      document.getElementById('version').innerHTML =
+        `<span class="fr">Gratuit · version ${v} du ${fr}</span><span class="en">Free · version ${v}, ${en}</span>`;
+    })
+    .catch(() => {});
+})();
+</script>
+</body>
+</html>
